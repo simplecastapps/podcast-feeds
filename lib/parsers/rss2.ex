@@ -109,7 +109,6 @@ defmodule PodcastFeeds.Parsers.RSS2 do
       |> Psc.do_parse_entry_node(node)
       |> Content.do_parse_entry_node(node)
     end)
-    # |> IO.inspect
     state = put_in state.feed.entries, entries
     state
   end

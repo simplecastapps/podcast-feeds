@@ -25,7 +25,8 @@ defmodule PodcastFeeds.Parsers.Ext.Itunes do
               summary: nil,
               season: nil,
               type: nil,
-              episodeType: nil
+              episodeType: nil,
+              keywords: nil
   end
 
   # itunes owner
@@ -51,6 +52,7 @@ defmodule PodcastFeeds.Parsers.Ext.Itunes do
   # <itunes:type>                 Y         episodic|serial
   # <itunes:episodeType>              Y     full|trailer|bonus
   # <itunes:summary>              Y   Y     When the "circled i” icon in the Description column is clicked
+  # <itunes:keywords>             Y   Y     keywords string
 
 
   def do_parse_meta_node(meta, node) do
@@ -165,6 +167,9 @@ defmodule PodcastFeeds.Parsers.Ext.Itunes do
         # The contents of the <itunes:type> tag can be episodic (default) or serial for <channel>
         # or it can be full, trailer, or bonus for an <item>
         type: node |> xpath(~x"./*[namespace-uri()='#{@namespace_uri}' and local-name()='type']/text()"os) |> Helpers.strip_nil,
+
+        # <itunes:keywords>
+        keywords: node |> xpath(~x"./*[namespace-uri()='#{@namespace_uri}' and local-name()='keywords']/text()"os) |> Helpers.strip_nil,
       }
     end).()
     put_in meta.itunes, itunes
@@ -210,6 +215,7 @@ defmodule PodcastFeeds.Parsers.Ext.Itunes do
         episodeType: node |> xpath(~x"./*[namespace-uri()='#{@namespace_uri}' and local-name()='episodeType']/text()"os) |> Helpers.strip_nil,
         episode: node |> xpath(~x"./*[namespace-uri()='#{@namespace_uri}' and local-name()='episode']/text()"os) |> Helpers.strip_nil,
         season: node |> xpath(~x"./*[namespace-uri()='#{@namespace_uri}' and local-name()='season']/text()"os) |> Helpers.strip_nil,
+        keywords: node |> xpath(~x"./*[namespace-uri()='#{@namespace_uri}' and local-name()='keywords']/text()"os) |> Helpers.strip_nil,
       }
     end).()
     put_in entry.itunes, itunes

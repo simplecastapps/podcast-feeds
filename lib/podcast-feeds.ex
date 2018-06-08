@@ -38,7 +38,8 @@ defmodule PodcastFeeds do
               image: nil,
               itunes: nil,
               atom_links: [],
-              contributors: []
+              contributors: [],
+              keywords: nil
   end
 
   # Feed Entry / Episode / Item data
@@ -58,7 +59,8 @@ defmodule PodcastFeeds do
               chapters: [],
               atom_links: [],
               contributors: [],
-              content_encoded: nil
+              content_encoded: nil,
+              keywords: nil
   end
 
   # A Feed
