@@ -37,6 +37,7 @@ defmodule PodcastFeeds do
               skip_days: [],
               image: nil,
               itunes: nil,
+              google: nil,
               atom_links: [],
               contributors: [],
               keywords: nil
@@ -79,10 +80,6 @@ defmodule PodcastFeeds do
               register_procedure: nil,
               protocol: nil
   end
-
-
-
-
 
   def parse(xml) do
     xml

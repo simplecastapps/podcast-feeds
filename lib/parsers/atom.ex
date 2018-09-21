@@ -11,6 +11,7 @@ defmodule PodcastFeeds.Parsers.Atom do
   alias PodcastFeeds.Parsers.Helpers
 
   alias PodcastFeeds.Parsers.Ext.Itunes
+  alias PodcastFeeds.Parsers.Ext.Google
   alias PodcastFeeds.Parsers.Ext.Psc
   alias PodcastFeeds.Parsers.Ext.Content
   alias PodcastFeeds.Parsers.Ext.Atom
@@ -47,6 +48,7 @@ defmodule PodcastFeeds.Parsers.Atom do
       }
       |> Atom.do_parse_meta_node(node)
       |> Itunes.do_parse_meta_node(node)
+      |> Google.do_parse_meta_node(node)
       |> Psc.do_parse_meta_node(node)
       |> Content.do_parse_meta_node(node)
 
@@ -59,7 +61,7 @@ defmodule PodcastFeeds.Parsers.Atom do
   def do_parse_entries(%ParserState{doc: doc} = state) do
     entries = doc
     |> xpath(~x"/feed/entry"el)
-    |> Enum.map(fn(node) -> 
+    |> Enum.map(fn(node) ->
       %Entry{
         # require: title or description
         title: node |> xpath(~x"./title/text()"s) |> Helpers.strip_nil,

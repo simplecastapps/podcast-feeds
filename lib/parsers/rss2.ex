@@ -14,6 +14,7 @@ defmodule PodcastFeeds.Parsers.RSS2 do
 
   alias PodcastFeeds.Parsers.Ext.Atom
   alias PodcastFeeds.Parsers.Ext.Itunes
+  alias PodcastFeeds.Parsers.Ext.Google
   alias PodcastFeeds.Parsers.Ext.Psc
   alias PodcastFeeds.Parsers.Ext.Content
 
@@ -75,6 +76,7 @@ defmodule PodcastFeeds.Parsers.RSS2 do
       }
       |> Atom.do_parse_meta_node(node)
       |> Itunes.do_parse_meta_node(node)
+      |> Google.do_parse_meta_node(node)
       |> Psc.do_parse_meta_node(node)
       |> Content.do_parse_meta_node(node)
     end).()
