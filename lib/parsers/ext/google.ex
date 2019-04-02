@@ -26,12 +26,6 @@ defmodule PodcastFeeds.Parsers.Ext.Google do
       category: best_match([
         node
           |> xpath(~x"./#{@namespace}:category/text()")
-          |> stringify(),
-        node
-          |> xpath(~x"./#{@namespace}:category[@text]")
-          |> elem(7)
-          |> hd()
-          |> elem(8)
           |> stringify()
       ]),
 
