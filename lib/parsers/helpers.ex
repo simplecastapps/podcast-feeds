@@ -9,7 +9,22 @@ defmodule PodcastFeeds.Parsers.Helpers do
     end
   end
 
-  def parse_date(datestring, format \\ "{RFC1123}") do
+  def parse_date(datestring, format \\ "{RFC1123}" )
+
+  def parse_date(datestring, formats) when is_list(formats) do
+    formats |> Enum.find(nil, fn format ->
+      datestring |> parse_date(format)
+    end)
+  end
+
+  def parse_date(datestring, format) do
+
+    datestring = if format == "{RFC1123}" || String.starts_with?(format, "{WDshort}, ") do
+      datestring |> String.split(" ") |> Enum.map(fn x -> x |> String.capitalize end) |> Enum.join(" ")
+    else
+      datestring
+    end
+
     case datestring |> Timex.parse(format) do
       {:ok, date} -> date
       _ -> nil
