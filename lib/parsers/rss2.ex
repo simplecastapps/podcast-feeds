@@ -58,7 +58,7 @@ defmodule PodcastFeeds.Parsers.RSS2 do
         copyright:  node |> xpath(~x"./copyright/text()"os) |> Helpers.strip_nil,
         managing_editor: node |> xpath(~x"./managingEditor/text()"os) |> Helpers.strip_nil |> Helpers.parse_email,
         web_master: node |> xpath(~x"./webMaster/text()"os) |> Helpers.strip_nil |> Helpers.parse_email,
-        publication_date: node |> xpath(~x"./pubDate/text()"os) |> Helpers.parse_date,
+        publication_date: node |> xpath(~x"./pubDate/text()"os) |> fn d -> Helpers.parse_date(d) || Helpers.parse_date(d, "{WDshort}, {0D} {Mfull} {YYYY} {ISOtime} {Z}") end.(),
         last_build_date: node |> xpath(~x"./lastBuildDate/text()"os) |> Helpers.parse_date,
         categories: node |> xpath(~x"./category/text()"osl)
           |> Enum.map(fn(el) -> Helpers.strip_nil(el) end)
@@ -103,7 +103,7 @@ defmodule PodcastFeeds.Parsers.RSS2 do
         comments: node |> xpath(~x"./comments/text()"os) |> Helpers.strip_nil,
         enclosure: node |> xpath(~x"./enclosure"oe) |> parse_enclosure_element,
         guid: node |> xpath(~x"./guid/text()"os) |> Helpers.strip_nil,
-        publication_date: node |> xpath(~x"./pubDate/text()"os) |> Helpers.parse_date,
+        publication_date: node |> xpath(~x"./pubDate/text()"os) |> fn d -> Helpers.parse_date(d) || Helpers.parse_date(d, "{WDshort}, {0D} {Mfull} {YYYY} {ISOtime} {Z}") end.(),
         source: node |> xpath(~x"./source/text()"os) |> Helpers.strip_nil,
       }
       |> Atom.do_parse_entry_node(node)
