@@ -12,7 +12,7 @@ defmodule PodcastFeeds.Parsers.Helpers do
   def parse_date(datestring, format \\ "{RFC1123}" )
 
   def parse_date(datestring, formats) when is_list(formats) do
-    formats |> Enum.find(nil, fn format ->
+    formats |> Enum.find_value(nil, fn format ->
       datestring |> parse_date(format)
     end)
   end
