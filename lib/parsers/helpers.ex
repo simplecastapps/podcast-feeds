@@ -17,10 +17,16 @@ defmodule PodcastFeeds.Parsers.Helpers do
     end)
   end
 
-  def parse_date(datestring, format) do
+  def proper_case(str) do
+    case str |> String.split_at(1) do
+      {"",_} -> str
+      {letter, rest} -> "#{letter |> String.upcase}#{rest}"
+    end
+  end
 
+  def parse_date(datestring, format) do
     datestring = if format == "{RFC1123}" || String.starts_with?(format, "{WDshort}, ") do
-      datestring |> String.split(" ") |> Enum.map(fn x -> x |> String.capitalize end) |> Enum.join(" ")
+      datestring |> String.split(" ") |> Enum.map(fn x -> x |> proper_case() end) |> Enum.join(" ")
     else
       datestring
     end
