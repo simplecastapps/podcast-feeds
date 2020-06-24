@@ -25,12 +25,15 @@ defmodule PodcastFeeds.Parsers.Helpers do
   end
 
   def parse_date(datestring, format) do
+
+    # days should be proper case, but some rss files don't comply with that
     datestring = if format == "{RFC1123}" || String.starts_with?(format, "{WDshort}, ") do
       datestring |> String.split(" ") |> Enum.map(fn x -> x |> proper_case() end) |> Enum.join(" ")
     else
       datestring
     end
 
+    # hour in pubdates on rss.com often has no leading 0
     datestring = if format == "{RFC1123}" && Regex.match?(~r/ [0-9]:[0-9]{2}:[0-9]{2} /, datestring) do
       Regex.replace(~r/ ([0-9]):([0-9]{2}):([0-9]{2}) /, datestring, " 0\\1:\\2:\\3 ")
     else
