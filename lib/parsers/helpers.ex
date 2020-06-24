@@ -31,11 +31,18 @@ defmodule PodcastFeeds.Parsers.Helpers do
       datestring
     end
 
+    datestring = if format == "{RFC1123}" && Regex.match?(~r/ [0-9]:[0-9]{2}:[0-9]{2} /, datestring) do
+      Regex.replace(~r/ ([0-9]):([0-9]{2}):([0-9]{2}) /, datestring, " 0\\1:\\2:\\3 ")
+    else
+      datestring
+    end
+
     case datestring |> Timex.parse(format) do
       {:ok, date} -> date
       _ -> nil
     end
   end
+
 
   def parse_integer(value) do
     case Integer.parse(value) do
